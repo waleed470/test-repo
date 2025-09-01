@@ -1,0 +1,13 @@
+name: Part3
+description: Deploy/Release
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        echo "::group::[Part3] Start"
+        echo "Branch: $GITHUB_REF_NAME"
+        echo "Simulating Part3 (deploy/release) ..."
+        sleep 2
+        echo "[Part3] OK"
+        echo "::endgroup::"

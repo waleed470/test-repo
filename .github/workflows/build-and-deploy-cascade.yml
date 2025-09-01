@@ -1,0 +1,55 @@
+name: Build & Deploy — Cascade F1→F9 (No needs)
+
+on:
+  push:
+    branches: [f1, f2, f3, f4, f5, f6, f7, f8, f9]
+
+jobs:
+  cascade:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      fail-fast: true
+      matrix:
+        branch: [f1, f2, f3, f4, f5, f6, f7, f8, f9]
+
+    steps:
+      - name: Decide branch window
+        id: decide
+        shell: bash
+        run: |
+          TRIGGER="${GITHUB_REF_NAME}"
+          CUR="${{ matrix.branch }}"
+          ORDER=(f1 f2 f3 f4 f5 f6 f7 f8 f9)
+
+          idx() { local s=$1; for i in "${!ORDER[@]}"; do [[ "${ORDER[$i]}" == "$s" ]] && echo $i && return; done; echo -1; }
+          ti=$(idx "$TRIGGER"); ci=$(idx "$CUR")
+
+          echo "trigger=$TRIGGER" >> $GITHUB_OUTPUT
+          echo "current=$CUR" >> $GITHUB_OUTPUT
+
+          if [ $ci -lt $ti ]; then
+            echo "continue=false" >> $GITHUB_OUTPUT
+            echo "Skip $CUR < $TRIGGER"
+          else
+            echo "continue=true" >> $GITHUB_OUTPUT
+            echo "Process $CUR >= $TRIGGER"
+          fi
+
+      - name: Checkout branch
+        if: steps.decide.outputs.continue == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+
+      - name: Part 1
+        if: steps.decide.outputs.continue == 'true'
+        uses: ./.github/actions/part1
+
+      - name: Part 2
+        if: steps.decide.outputs.continue == 'true'
+        uses: ./.github/actions/part2
+
+      - name: Part 3
+        if: steps.decide.outputs.continue == 'true'
+        uses: ./.github/actions/part3

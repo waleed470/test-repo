@@ -1,0 +1,13 @@
+name: Part1
+description: Build/Prepare (replace echoes with real steps if needed)
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        echo "::group::[Part1] Start"
+        echo "Branch: $GITHUB_REF_NAME"
+        echo "Simulating Part1 (build/prepare) ..."
+        sleep 2
+        echo "[Part1] OK"
+        echo "::endgroup::"

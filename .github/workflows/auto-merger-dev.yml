@@ -1,0 +1,29 @@
+name: Auto Merger (DEV -> f1..f9)
+
+on:
+  push:
+    branches: [dev]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  merge_targets:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      fail-fast: true
+      matrix:
+        target: [f1, f2, f3, f4, f5, f6, f7, f8, f9]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Merge dev -> ${{ matrix.target }}
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: dev
+          target_branch: ${{ matrix.target }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}

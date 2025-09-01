@@ -1,0 +1,13 @@
+name: Part2
+description: Package/Test
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        echo "::group::[Part2] Start"
+        echo "Branch: $GITHUB_REF_NAME"
+        echo "Simulating Part2 (package/test) ..."
+        sleep 2
+        echo "[Part2] OK"
+        echo "::endgroup::"

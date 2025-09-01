@@ -1,0 +1,14 @@
+name: Serverless Part1 (Manual + f1)
+
+on:
+  push:
+    branches: [f1]
+  workflow_dispatch:
+
+jobs:
+  run_part1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Part 1
+        uses: ./.github/actions/part1
