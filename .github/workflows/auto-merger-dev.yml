@@ -26,4 +26,4 @@ jobs:
           type: now
           from_branch: dev
           target_branch: ${{ matrix.target }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_AUTO_MERGER }}
